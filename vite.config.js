@@ -6,26 +6,14 @@ import SortCss from 'postcss-sort-media-queries';
 
 export default defineConfig(({ command }) => {
   return {
-    // 🔹 базовый путь для GitHub Pages
-    base: '/goit-js-hw-11/',
-
-    // 🔹 корень проекта
-    root: 'src',
-
     define: {
       [command === 'serve' ? 'global' : '_global']: {},
     },
-
+    root: 'src',
     build: {
       sourcemap: true,
-      // 🔹 куда складывать билд
-      outDir: '../dist',
-      emptyOutDir: true,
-
       rollupOptions: {
-        // 🔹 все html в src
-        input: glob.sync('*.html'),
-
+        input: glob.sync('./src/*.html'),
         output: {
           manualChunks(id) {
             if (id.includes('node_modules')) {
@@ -46,11 +34,12 @@ export default defineConfig(({ command }) => {
           },
         },
       },
+      outDir: '../dist',
+      emptyOutDir: true,
     },
-
     plugins: [
       injectHTML(),
-      FullReload(['./src/**/*.html']),
+      FullReload(['./src/**/**.html']),
       SortCss({
         sort: 'mobile-first',
       }),
